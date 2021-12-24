@@ -1,16 +1,7 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import axios from "axios";
 import { quizQuestions } from "./quizQuestions";
 import "./App.css";
-
-// type QuestionArr = {
-//   category: string;
-//   type: string;
-//   difficulty: string;
-//   question: string;
-//   correct_answer: string;
-//   incorrect_answers: string[];
-// };
 
 function App() {
   const [step, stepSet] = useState<number>(-1);
@@ -46,6 +37,12 @@ function App() {
     [step, score, scoreSet, nextStep]
   );
 
+  const isGameOver = useCallback(() => {
+    scoreSet(0);
+    stepSet(-1);
+    gameOverSet(false);
+  }, [scoreSet, stepSet, gameOverSet]);
+
   if (step === -1) {
     return (
       <div>
@@ -58,31 +55,50 @@ function App() {
 
   return (
     <div className='App'>
-      <div>
+      {gameOver ? (
         <div>
-          <h1>The Easiest Quiz Ever</h1>
+          <div>
+            <h4>Score: {score}</h4>
+          </div>
+          <div>
+            <button
+              type='button'
+              onClick={() => {
+                isGameOver();
+              }}
+            >
+              Play Again
+            </button>
+          </div>
         </div>
+      ) : (
         <div>
-          <h4>Score: {score}</h4>
+          <div>
+            <div>
+              <h1>The Easiest Quiz Ever</h1>
+            </div>
+            <div>
+              <h4>Score: {score}</h4>
+            </div>
+            <div>difficulty: {quizQuestions[step].difficulty} </div>
+            <div>category: {quizQuestions[step].category} </div>
+            <div>question: {quizQuestions[step].question} </div>
+          </div>
+          <div>
+            {getAnswers.map((answer: string, index: number) => {
+              return (
+                <button
+                  type='button'
+                  key={index}
+                  onClick={() => verifyAnswer(answer)}
+                >
+                  {answer}
+                </button>
+              );
+            })}
+          </div>
         </div>
-        <div>difficulty: {quizQuestions[step].difficulty} </div>
-        <div>category: {quizQuestions[step].category} </div>
-        <div>question: {quizQuestions[step].question} </div>
-      </div>
-      {getAnswers.map((answer: string, index: number) =>
-        console.log(answer, index)
       )}
-      {getAnswers.map((answer: string, index: number) => {
-        return (
-          <button
-            type='button'
-            key={index}
-            onClick={() => verifyAnswer(answer)}
-          >
-            {answer}
-          </button>
-        );
-      })}
     </div>
   );
 }
