@@ -18,6 +18,14 @@ function App() {
   const [step, stepSet] = useState<number>(-1);
   const [score, scoreSet] = useState<number>(0);
   const [gameOver, gameOverSet] = useState<boolean>(false);
+  const [numberQuestions, numberQuestionsSet] = useState<string>("10");
+  const [difficulty, difficultySet] = useState<string>("easy");
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    newQuestions(+numberQuestionsSet, difficulty);
+    nextStep();
+  };
 
   const newQuestions = useCallback(async (size: number, difficulty: string) => {
     const endpoint = `https://opentdb.com/api.php?amount=${size}&difficulty=${difficulty}&type=multiple`;
@@ -27,7 +35,6 @@ function App() {
   }, []);
 
   const nextStep = useCallback(() => {
-    console.log("hello");
     if (step < gameQuestions.length - 1) {
       stepSet(step + 1);
     } else {
@@ -64,15 +71,42 @@ function App() {
   if (step === -1) {
     return (
       <div>
-        <button
-          type='button'
-          onClick={async () => {
-            await newQuestions(10, "easy");
-            nextStep();
-          }}
-        >
-          Play Quiz
-        </button>
+        <form>
+          <label>Quiz Settings:</label>
+          <br />
+          <label>Number of Questions:</label>
+          <select
+            value={numberQuestions}
+            onChange={(e) => numberQuestionsSet(e.target.value)}
+          >
+            <option value='10'>10</option>
+            <option value='20'>20</option>
+            <option value='30'>30</option>
+          </select>
+          <br />
+          <label>Difficulty:</label>
+          <select
+            value={difficulty}
+            onChange={(e) => difficultySet(e.target.value)}
+          >
+            <option value='easy'>easy</option>
+            <option value='medium'>medium</option>
+            <option value='hard'>hard</option>
+          </select>
+          <br />
+          <button
+            type='button'
+            onClick={async () => {
+              await newQuestions(+numberQuestions, difficulty);
+              gameOverSet(false);
+              setTimeout(() => {
+                nextStep();
+              }, 3000);
+            }}
+          >
+            Submit
+          </button>
+        </form>
       </div>
     );
   }
@@ -128,3 +162,15 @@ function App() {
 }
 
 export default App;
+
+{
+  /* <button
+  type='button'
+  onClick={async () => {
+    await newQuestions(10, "easy");
+    nextStep();
+  }}
+>
+  Play Quiz
+</button>; */
+}
