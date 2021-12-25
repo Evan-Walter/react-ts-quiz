@@ -27,12 +27,15 @@ function App() {
     nextStep();
   };
 
-  const newQuestions = useCallback(async (size: number, difficulty: string) => {
-    const endpoint = `https://opentdb.com/api.php?amount=${size}&difficulty=${difficulty}&type=multiple`;
-    const res = await axios.get(endpoint);
-    console.log(res.data.results);
-    gameQuestionsSet(res.data.results);
-  }, []);
+  const newQuestions = useCallback(
+    async (numberQuestions: number, difficulty: string) => {
+      const endpoint = `https://opentdb.com/api.php?amount=${numberQuestions}&difficulty=${difficulty}&type=multiple`;
+      const res = await axios.get(endpoint);
+      console.log(res.data.results);
+      gameQuestionsSet(res.data.results);
+    },
+    [numberQuestions, difficulty, gameQuestionsSet]
+  );
 
   const nextStep = useCallback(() => {
     if (step < gameQuestions.length - 1) {
@@ -97,11 +100,9 @@ function App() {
           <button
             type='button'
             onClick={async () => {
-              await newQuestions(+numberQuestions, difficulty);
               gameOverSet(false);
-              setTimeout(() => {
-                nextStep();
-              }, 3000);
+              await newQuestions(+numberQuestions, difficulty);
+              stepSet(step + 1);
             }}
           >
             Submit
@@ -162,15 +163,3 @@ function App() {
 }
 
 export default App;
-
-{
-  /* <button
-  type='button'
-  onClick={async () => {
-    await newQuestions(10, "easy");
-    nextStep();
-  }}
->
-  Play Quiz
-</button>; */
-}
