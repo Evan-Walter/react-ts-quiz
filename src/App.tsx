@@ -73,11 +73,14 @@ function App() {
 
   if (step === -1) {
     return (
-      <div>
+      <div className='quiz-set'>
         <form>
-          <label>Quiz Settings:</label>
+          <label style={{ fontSize: "40px" }}>
+            <b>Quiz Settings</b>
+          </label>
           <br />
           <label>Number of Questions:</label>
+          <br />
           <select
             value={numberQuestions}
             onChange={(e) => numberQuestionsSet(e.target.value)}
@@ -88,6 +91,7 @@ function App() {
           </select>
           <br />
           <label>Difficulty:</label>
+          <br />
           <select
             value={difficulty}
             onChange={(e) => difficultySet(e.target.value)}
@@ -98,6 +102,7 @@ function App() {
           </select>
           <br />
           <button
+            className='btn'
             type='button'
             onClick={async () => {
               gameOverSet(false);
@@ -121,6 +126,7 @@ function App() {
           </div>
           <div>
             <button
+              className='btn'
               type='button'
               onClick={() => {
                 isGameOver();
@@ -139,14 +145,23 @@ function App() {
             <div>
               <h4>Score: {score}</h4>
             </div>
-            <div>difficulty: {gameQuestions[step].difficulty} </div>
-            <div>category: {gameQuestions[step].category} </div>
-            <div>question: {gameQuestions[step].question} </div>
+            <div>
+              <b>Difficulty: </b> {gameQuestions[step].difficulty}{" "}
+            </div>
+            <div>
+              <b>Category:</b> {gameQuestions[step].category}{" "}
+            </div>
+            <div>
+              <b>Question: </b>
+              <br />
+              {gameQuestions[step].question}{" "}
+            </div>
           </div>
-          <div>
+          <div className='div-answers'>
             {getAnswers.map((answer: string, index: number) => {
               return (
                 <button
+                  className='div-btn'
                   type='button'
                   key={index}
                   onClick={() => verifyAnswer(answer)}

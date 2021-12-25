@@ -36,3 +36,38 @@
     transform: rotate(360deg);
   }
 }
+
+.quiz-set {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  min-height: 50vh;
+}
+.quiz-set label {
+  font-size: 20px;
+}
+
+.btn {
+  text-align: center;
+  margin-top: 20px;
+  width: auto;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 10px;
+}
+
+.div-answers {
+  display: inline-flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 20px;
+}
+
+.div-btn {
+  text-align: center;
+  width: 30vw;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 10px;
+  margin: 0 auto;
+}
