@@ -56,7 +56,7 @@ function App() {
   }, [step]);
 
   const verifyAnswer = useCallback(
-    (answer) => {
+    (answer: any) => {
       if (answer === gameQuestions[step].correct_answer) {
         scoreSet(score + 1);
       }
